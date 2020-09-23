@@ -16,9 +16,9 @@ int status = WL_IDLE_STATUS;     // the Wifi radio's status
 
 int operationMode;
 unsigned long previousMillis = 0;
-const long SET_BASELINE_INTERVAL_NORMAL = 1 * 60 * 60 * 1000;
-const long FINDING_BASELINE_DURATION = 12 * 60 * 60 * 1000;
-const long INTERVAL = 10 * 1000;
+const long readBaselineInterval = 1 * 60 * 60 * 1000;
+const long findingBaselineDuration = 12 * 60 * 60 * 1000;
+const long readSensorInterval = 10 * 1000;
 
 byte ipInfluxDB[] = {192, 168, 178, 201};
 int portInfluxDB = 8089;
@@ -109,13 +109,13 @@ void loop() {
   unsigned long currentMillis = millis();
   switch(operationMode) {
     case NORMAL:
-      if (currentMillis - previousMillis >= SET_BASELINE_INTERVAL_NORMAL) {
+      if (currentMillis - previousMillis >= readBaselineInterval) {
         previousMillis = currentMillis;
         readAndStoreBaseline();
       }
       break;
     case FINDING_BASELINE:
-      if (currentMillis - previousMillis >= FINDING_BASELINE_DURATION) {
+      if (currentMillis - previousMillis >= findingBaselineDuration) {
         previousMillis = currentMillis;
         readAndStoreBaseline();
         switchOperationMode(NORMAL);
@@ -132,5 +132,5 @@ void loop() {
       udpDatabase.sendLine(line);
   }
 
-  delay(INTERVAL);
+  delay(readSensorInterval);
 }
