@@ -4,7 +4,7 @@
 #include <sgp30.h>
 #include "wifi_secrets.h"
 #include "shared.h"
-#include "database.h"
+#include "UDPDatabase.h"
 #include "config.h"
 
 #define NORMAL 0
@@ -19,6 +19,11 @@ unsigned long previousMillis = 0;
 const long SET_BASELINE_INTERVAL_NORMAL = 1 * 60 * 60 * 1000;
 const long FINDING_BASELINE_DURATION = 12 * 60 * 60 * 1000;
 const long INTERVAL = 10 * 1000;
+
+byte ipInfluxDB[] = {192, 168, 178, 201};
+int portInfluxDB = 8089;
+
+UDPDatabase udpDatabase(ipInfluxDB, portInfluxDB, "indoor-air-quality", "sensor=SGP30", &operationMode);
 
 void setup() {
   Serial.begin(115200);
@@ -82,10 +87,10 @@ void readAndStoreBaseline() {
     writeToFile(sensorConfiguration);
 
     if (status == WL_CONNECTED) {
-      line = createLine(String(operationMode), "baseline", String(iaqBaseline));
+      line = udpDatabase.createLine("baseline", iaqBaseline);
       Serial.println(line);
 
-      sendToDatabase(line);
+      udpDatabase.sendLine(line);
     }
   }
 }
@@ -121,10 +126,10 @@ void loop() {
   err = sgp_measure_iaq_blocking_read(&tvocPpb, &co2eqPpm);
   if (err == STATUS_OK && status == WL_CONNECTED) {
       // concatenate the values for the line protocol
-      line = createLine(String(operationMode), "co2eq", String(co2eqPpm)) + "\n" + createLine(String(operationMode), "tvoc", String(tvocPpb));
+      line = udpDatabase.concatenate(udpDatabase.createLine("co2eq", co2eqPpm), udpDatabase.createLine("tvoc", tvocPpb));
       Serial.println(line);
 
-      sendToDatabase(line);
+      udpDatabase.sendLine(line);
   }
 
   delay(INTERVAL);
