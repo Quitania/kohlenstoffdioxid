@@ -77,16 +77,19 @@ void readAndStoreBaseline() {
   u32 iaqBaseline = 0;
   String line;
 
+  // read baseline from sensor
   if (sgp_get_iaq_baseline(&iaqBaseline) != STATUS_OK) {
     Serial.println("get baseline failed!");
   } else {
     Serial.println("get baseline");
     Serial.println(iaqBaseline, HEX);
 
+    // write baseline to config
     SensorConfiguration sensorConfiguration = { iaqBaseline };
     writeToFile(sensorConfiguration);
 
     if (status == WL_CONNECTED) {
+      // send baseline to database
       line = udpDatabase.createLine("baseline", iaqBaseline);
       Serial.println(line);
 
@@ -96,6 +99,7 @@ void readAndStoreBaseline() {
 }
 
 void setBaseline(u32 iaqBaseline) {
+  // set baseline in sensor
   sgp_set_iaq_baseline(iaqBaseline);
   Serial.println("set baseline");
   Serial.println(iaqBaseline, HEX);
@@ -125,7 +129,6 @@ void loop() {
 
   err = sgp_measure_iaq_blocking_read(&tvocPpb, &co2eqPpm);
   if (err == STATUS_OK && status == WL_CONNECTED) {
-      // concatenate the values for the line protocol
       line = udpDatabase.concatenate(udpDatabase.createLine("co2eq", co2eqPpm), udpDatabase.createLine("tvoc", tvocPpb));
       Serial.println(line);
 
