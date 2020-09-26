@@ -28,13 +28,26 @@ UDPDatabase udpDatabase(ipInfluxDB, portInfluxDB, "indoor-air-quality", "sensor=
 void setup() {
   Serial.begin(115200);
 
-  Serial.println("Attempting to connect to WiFi...");
+  delay(1500);
+
+  if (!LittleFS.begin()) {
+    Serial.println("LittleFS mount failed, unable to read or write baseline");
+  }
+
+  Serial.print("Attempting to connect to WiFi");
   WiFi.mode(WIFI_STA);
   status = WiFi.begin(ssid, pass);
 
-  if (status == WL_CONNECTED) { 
+  while (status != WL_CONNECTED && status != WL_CONNECT_FAILED) {
+    Serial.print(".");
+    delay(500);
+    status = WiFi.status();
+  }
+  Serial.println();
+
+  if (status == WL_CONNECTED) {
     // if the connection succeeded, print network info
-    Serial.println("Connected to network");
+    Serial.println("Connected");
 
     IPAddress ip = WiFi.localIP();
     Serial.print("IP Address: ");
@@ -44,6 +57,8 @@ void setup() {
     Serial.print("signal strength (RSSI):");
     Serial.print(rssi);
     Serial.println(" dBm");
+  } else {
+    Serial.println("No connection to WiFi");
   }
 
   // wait for sensor to initialize
@@ -128,11 +143,15 @@ void loop() {
   }
 
   err = sgp_measure_iaq_blocking_read(&tvocPpb, &co2eqPpm);
-  if (err == STATUS_OK && status == WL_CONNECTED) {
+  if (err == STATUS_OK) {
+    if (status == WL_CONNECTED) {
       line = udpDatabase.concatenate(udpDatabase.createLine("co2eq", co2eqPpm), udpDatabase.createLine("tvoc", tvocPpb));
       Serial.println(line);
 
       udpDatabase.sendLine(line);
+    } else {
+      Serial.println("co2eq=" + String(co2eqPpm) + ", tvoc=" + String(tvocPpb));
+    }
   }
 
   delay(readSensorInterval);
