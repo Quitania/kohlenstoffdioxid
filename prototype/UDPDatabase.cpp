@@ -10,7 +10,9 @@ UDPDatabase::UDPDatabase(IPAddress ipAddress, int port, String measurement, Stri
 {
   _ipAddress = ipAddress;
   _port = port;
-  _measurementAndTags = measurement + kTagValuePairsSeparator + tags;
+  _measurementAndTags = measurement;
+  _measurementAndTags += kTagValuePairsSeparator;
+  _measurementAndTags += tags;
   _operationMode = operationMode;
 }
 
