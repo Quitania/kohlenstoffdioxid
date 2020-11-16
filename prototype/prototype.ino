@@ -166,7 +166,7 @@ void loop() {
     sgp_set_absolute_humidity(absoluteHumidity * 1000);
 
     if (status == WL_CONNECTED) {
-      line = m2.concatenate(m2.createLine("temperature", temperature), m2.createLine("humidity", humidity));
+      line = Measurement::concatenate(m2.createLine("temperature", temperature), m2.createLine("humidity", humidity));
     } else {
       Serial.println("temperature=" + String(temperature) + ", humidity=" + String(humidity));
     }
@@ -175,7 +175,7 @@ void loop() {
   err = sgp_measure_iaq_blocking_read(&tvocPpb, &co2eqPpm);
   if (err == STATUS_OK) {
     if (status == WL_CONNECTED) {
-      line = m1.concatenate(line, m1.concatenate(m1.createLine("co2eq", co2eqPpm), m1.createLine("tvoc", tvocPpb)));
+      line = Measurement::concatenate(line, m1.concatenate(m1.createLine("co2eq", co2eqPpm), m1.createLine("tvoc", tvocPpb)));
 
       Serial.println(line);
       udpDatabase.sendLine(line);
