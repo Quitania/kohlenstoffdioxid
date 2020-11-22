@@ -188,6 +188,7 @@ void loop() {
     }
   }
 
+  ring.clear();
   ring.colorPixelsFromValue(co2eqPpm);
 
   delay(readSensorInterval);
