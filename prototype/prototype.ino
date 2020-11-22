@@ -7,6 +7,7 @@
 #include "shared.h"
 #include "UDPDatabase.h"
 #include "Measurement.h"
+#include "NeoPixelRing.h"
 #include "config.h"
 
 #define NORMAL 0
@@ -31,6 +32,7 @@ UDPDatabase udpDatabase(ipInfluxDB, portInfluxDB);
 Measurement m1("indoor-air-quality", "sensor=SGP30", &operationMode);
 Measurement m2("indoor-air-quality", "sensor=SHT35", &operationMode);
 SHT35 sht35(sclPin);
+NeoPixelRing ring;
 
 void setup() {
   Serial.begin(115200);
@@ -87,6 +89,8 @@ void setup() {
   } else {
     switchOperationMode(FINDING_BASELINE);
   }
+
+  ring.begin();
 }
 
 bool isConfigurationValid(SensorConfiguration sensorConfiguration) {
@@ -183,6 +187,8 @@ void loop() {
       Serial.println("co2eq=" + String(co2eqPpm) + ", tvoc=" + String(tvocPpb));
     }
   }
+
+  ring.colorPixelsFromValue(co2eqPpm);
 
   delay(readSensorInterval);
 }
