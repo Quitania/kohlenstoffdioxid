@@ -11,11 +11,12 @@ Built inspired by [Umwelt-Campus](https://www.umwelt-campus.de/forschung/projekt
 Using lessons learned from first prototype:
 - Adafruit Feather M0 Express
 - SGP30
-- SHT35
+- SHT31-D
 ### Third prototype
 Super mobile build:
 - Adafruit Trinket M0 or Serpente R2
 - SCD30
+- BME280
 
 ## Software
 - InfluxDB
