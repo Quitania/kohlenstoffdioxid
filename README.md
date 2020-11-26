@@ -7,16 +7,19 @@ Built inspired by [Umwelt-Campus](https://www.umwelt-campus.de/forschung/projekt
 - Adafruit Huzzah Feather ESP8266
 - SGP30
 - SHT35
+- NeoPixel Ring
 ### Second prototype
 Using lessons learned from first prototype:
 - Adafruit Feather M0 Express
 - SGP30
 - SHT31-D
+- NeoPixel FeatherWing
 ### Third prototype
 Super mobile build:
 - Adafruit Trinket M0 or Serpente R2
 - SCD30
-- BME280
+- BMP280
+- Custom Android App
 
 ## Software
 - InfluxDB
