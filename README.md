@@ -8,6 +8,7 @@ Built inspired by [Umwelt-Campus](https://www.umwelt-campus.de/forschung/projekt
 - SGP30
 - SHT35
 - NeoPixel Ring
+
 ![first_prototype_front](/docs/first_prototype_front.jpg) ![first_prototype_front](/docs/first_prototype_back.jpg) 
 ### Second prototype
 Using lessons learned from first prototype:
