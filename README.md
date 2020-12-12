@@ -10,13 +10,13 @@ Built inspired by [Umwelt-Campus](https://www.umwelt-campus.de/forschung/projekt
 - NeoPixel Ring
 
 ![first_prototype_front](/docs/first_prototype_front.jpg) ![first_prototype_front](/docs/first_prototype_back.jpg) 
-### Second prototype
+### Second prototype (planned)
 Using lessons learned from first prototype:
 - Adafruit Feather M0 Express
 - SGP30
 - SHT31-D
 - NeoPixel FeatherWing
-### Third prototype
+### Third prototype (planned)
 Super mobile build:
 - Adafruit Trinket M0 or Serpente R2
 - SCD30
