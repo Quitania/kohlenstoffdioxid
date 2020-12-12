@@ -19,6 +19,8 @@ Using lessons learned from first prototype:
 - SHT31-D
 - NeoPixel FeatherWing
 
+Not build yet. I choose a different controller, because I don't need WiFi on the go and this one has a little prototyping area. I'm trying to keep the size small enough, so it will fit into [this](https://learn.adafruit.com/3d-printed-case-for-adafruit-feather) case.
+
 ### Third prototype (planned)
 Super mobile build:
 - Adafruit Trinket M0 or Serpente R2
@@ -26,7 +28,7 @@ Super mobile build:
 - BMP280
 - Custom Android App
 
-Not build yet. I choose a different controller, because I don't need WiFi on the go and this one has a little prototyping area. I'm trying to keep the size small enough, so it will fit into [this](https://learn.adafruit.com/3d-printed-case-for-adafruit-feather) case.
+Not build yet. Displaying the output on a mobile phone saves space and by using USB, I don't need an extra battery.
 
 ## Software
 - InfluxDB
